@@ -1,0 +1,51 @@
+// Place all the styles related to the rule_parameter_sets controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#workspace.rule_parameter_sets.index
+{
+}
+
+#workspace.rule_parameter_sets.show, #workspace.compliance_check_tasks.rule_parameter_set
+{
+    .summary label {
+        font-weight: bold;
+    }
+
+    div.attributes_group {
+        margin: 15px 0 15px 0;
+
+        .title { font-weight: bold; }
+
+        .columns{
+            margin-left: 10px;
+
+            div {
+                display: inline-block;
+
+                &.two_columns { width: 45%; }
+                &.three_columns { width: 30%; }
+                &.four_columns { width: 23%; }
+
+                label {
+                    color: #616161;
+                }
+
+                .value { margin-left: 5px; }
+            }
+        }
+    }
+
+    div.rule_parameter_by_mode {
+        margin: 20px 0 0 0 !important;
+
+        .mode_specific {
+            display: none;
+            margin: 0 0 0 10px;
+
+            p label { color: #616161; }
+        }
+    }
+}
+
+

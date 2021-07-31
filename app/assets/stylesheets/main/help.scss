@@ -1,0 +1,173 @@
+#workspace.help {
+
+ul li {
+    list-style: circle;
+    margin: 7px 0 7px 20px;
+}
+ol ul li {
+    list-style: circle;
+    margin: 7px 0 7px 20px;
+}
+
+
+ol {
+    list-style: none; 
+    margin: 7px 0 7px 20px;
+    padding: 0;
+    counter-reset: num;
+}
+
+ol li:before {
+    content: counter(num) '. ';
+    counter-increment: num;
+}
+
+ol ol li:before {
+    content: counters(num, '.') ' ';
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: bold;
+}
+
+cite {
+  font-style: italic;
+}
+
+p.attr_data {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+p.olnext {
+  margin: -7px 0 0 40px !important;
+}
+
+p.ddnext {
+  margin: 0 0 0 30px !important;
+}
+
+p.note {
+  margin-left: 20px !important;
+  font-weight: bold;
+}
+
+p.border_image {
+  text-align: center;
+}
+
+p.border_image img {
+  border-style:solid;
+  border-width:1px;
+  border-color: rgb(187,187,187);
+}
+
+
+table {
+    width: 100%;
+}
+
+table td {
+    padding: 3px 5px;
+    width: 30%;
+}
+
+dt {
+    font-style:italic;
+    margin: 5px 0; 
+}
+
+dd {
+    padding-left: 10px;
+}
+
+ 
+  table.meta {
+ width:50%;
+ }
+  table.meta th { 
+ border-width:1px;
+ border-style:solid; 
+ border-color:black;
+ }
+  table.meta td { 
+ border-width:1px;
+ border-style:solid; 
+ border-color:black;
+ }
+
+}
+#sidebarhelp.help {
+h2 {
+    font-size: 17px;
+}
+
+h3 {
+    font-size: 15px;
+}
+
+h4 {
+    font-weight: bold;
+    padding: 7px 0;
+}
+
+ul li {
+    list-style: circle;
+    margin: 7px 0 7px 20px;
+}
+
+ol {
+    list-style: none; 
+    margin: 7px 0 7px 20px;
+    padding: 0;
+    counter-reset: num;
+}
+
+ol li:before {
+    content: counter(num) '. ';
+    counter-increment: num;
+}
+
+ol ol li:before {
+    content: counters(num, '.') ' ';
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: bold;
+}
+
+cite {
+  font-style: italic;
+}
+
+p.attr_data {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+table {
+    width: 100%;
+}
+
+table td {
+    padding: 3px 5px;
+    width: 30%;
+}
+
+dt {
+    font-style:italic;
+    margin: 5px 0; 
+}
+
+dd {
+    padding-left: 10px;
+}
+}

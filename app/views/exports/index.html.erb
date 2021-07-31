@@ -1,0 +1,11 @@
+<%= title_tag t('.title') %> 
+<div class="warning"><%= t('.warning') %> </div> 
+
+<div id="exports"><%= render 'exports' %></div>
+
+
+<% content_for :sidebar do %>
+  <ul class="actions">
+    <li><%= link_to t('exports.actions.new'), new_referential_export_task_path(@referential), :class => "add" %></li>
+  </ul>
+<% end %>

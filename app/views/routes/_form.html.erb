@@ -1,0 +1,101 @@
+<%= semantic_form_for [@referential, @line, @route] do |form| %>
+  <%= form.inputs do %>
+    <%= form.input :name %>
+    <%= form.input :published_name %>
+    <%= form.input :number %>
+    <%= form.input :comment %>
+    <%= form.input :opposite_route, :as => :select, :collection => @line.routes.select { |r| r.id != @route.id } %>
+    <%= form.input :direction_code, :as => :select, :collection => Chouette::Route.directions, :include_blank => false, :member_label => Proc.new { |mode| t("directions.label.#{mode}") } %>
+    <%= form.input :wayback_code, :as => :select, :collection => Chouette::Route.waybacks, :include_blank => false, :member_label => Proc.new { |mode| t("waybacks.label.#{mode}") } %>
+    <%= form.input :objectid, :required => !@route.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.route.objectid")} %>
+  <% end %>
+	<div id="stop_points">
+		<%= form.semantic_fields_for :stop_points, :include_id => false do |p| %>
+      <%= render "stop_point_fields",  :f => p %>
+		<% end %>
+    <div class="links">
+	    <%= link_to_add_association t("routes.actions.add_stop_point"), form, :stop_points, :class => 'add_stop_point add' %>
+      <br/>
+      <%= link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), {:class => "add", :target => "_blank"} %>
+    </div>
+	</div>
+
+   <%= form.actions do %>
+     <%= form.action :submit, :as => :button %>
+     <%= form.action :cancel, :as => :link %>
+   <% end %>
+<% end %>
+<script>
+
+$(document).ready( function() {
+  var stop_point_ids = [];
+
+  var order_position = function() {
+    $('#stop_points input[type="hidden"][id$="position"]').each(function(index) {
+      $(this).val(index);
+    });
+  };
+
+  var write_stop_point_ids = function(){
+    $('#stop_points input[type="hidden"][class~="stop_point_id"]').each(function(index,element) {
+      // soit le parent a la classe added_stop_point
+        if ( $(element).hasClass("added_stop_point") ){
+          $(this).attr("value", "");
+        } else {
+          $(this).attr("value", stop_point_ids.shift());
+        }
+    });
+  }
+
+  var empty_stop_point_ids = function() {
+    stop_point_ids = $.map($('#stop_points input[type="hidden"][class="stop_point_id"]'), function(element, index) {
+      return $(element).val();
+    });
+    // console.log(  "before-remove");
+    // console.log(  stop_point_ids);
+  };
+
+  $('#stop_points').sortable({
+      axis: 'y',
+      dropOnEmpty: false,
+      handle: '.handle',
+      cursor: 'crosshair',
+      items: '.stop_point',
+      opacity: 0.4,
+      scroll: true,
+      start: function( event, ui ) {
+        empty_stop_point_ids();
+      },
+      update: function( event, ui ) {
+        write_stop_point_ids();
+        order_position();
+      }
+  });
+
+  $('#stop_points').bind("cocoon:after-insert", function(event, insertedItem) {
+
+    var new_stop_count = $('div.nested-fields.stop_point').size();
+    var cocoonId = insertedItem.find("input.new_stop_point").attr("id").match( /route_stop_points_attributes_(\d+)_stop_area_id/)[1];
+    insertedItem.find('input').each( function(index,e){
+      var old = $(e).attr("name");
+      if (old!=undefined) {
+        $(e).attr("name", old.replace( cocoonId, new_stop_count - 1));
+      }
+    });
+
+    //console.log( "cocoonId="+cocoonId+", new_stop_count="+new_stop_count);
+    order_position();
+  });
+
+  $('#stop_points').on("cocoon:before-remove", empty_stop_point_ids);
+
+  $('#stop_points').on("cocoon:after-remove", function() {
+    write_stop_point_ids();
+    order_position();
+  });
+});
+
+
+
+
+</script>

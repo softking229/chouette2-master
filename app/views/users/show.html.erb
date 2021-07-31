@@ -1,0 +1,43 @@
+<%= title_tag @user.email %>
+
+<div class="user">
+<p>
+<label><%= User.human_attribute_name("name") %>: </label>
+<%= @user.name %>
+</p>
+<p>
+<label><%= User.human_attribute_name("email") %>: </label>
+<%= @user.email %>
+</p>
+<p>
+<label><%= User.human_attribute_name("role") %>: </label>
+<%= t("users.role.#{@user.role}") %>
+</p>
+</div>
+
+<% if current_user.admin? || @user == current_user %>
+  <% content_for(:sidebar) do %>
+    <ul class="actions">
+      <% if @user == current_user %>
+        <li>
+          <%= link_to( t('users.actions.edit'), edit_user_registration_path, :class => "edit") %>
+        </li>
+      <% end %>
+      <% if current_user.admin? %>
+        <li>
+          <%= link_to( t('users.actions.role_edit'), user_role_edit_organisation_path(@user), :class => "eye") %>
+        </li>
+      <% end %>
+      <% if current_user.admin? || @user == current_user %>
+        <li>
+          <%= link_to t('users.actions.destroy'), organisation_user_path(@user),
+                      :method => :delete,
+                      :data => {
+                        :confirm => t('users.actions.destroy_confirm')
+                      },
+                      :class => "remove" %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

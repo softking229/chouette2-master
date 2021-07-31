@@ -1,0 +1,68 @@
+<div id="sessions_new" class="row">
+  <%= render 'devise/shared/intro' %>
+  <div class="col-md-4 login">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :wrapper => "form_without_label", html: { :class => 'form-horizontal session_new' } ) do |form| %>
+          <%= form.input :email, :label => false, input_html: { :class => "form-control" } %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= form.input :password, :as => :password, :label => false, input_html: { :class => "form-control" } %>
+            </div>
+            <div class="col-md-6">
+              <%= form.button :submit, t("devise.sessions.new.commit"), :class => "btn-primary" %>
+            </div>
+          </div>
+          <div class="row options">
+            <div class="col-md-6">
+              <% if devise_mapping.rememberable? %>
+                <%= form.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
+              <% end %>
+            </div>
+            <div class="col-md-6 new_password">
+              <%= link_to t("devise.links.new_password"), new_password_path(resource_name) %>
+              <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+                <br>
+                <%= link_to t("devise.links.new_confirmation"), new_confirmation_path(resource_name) %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% if (Rails.application.secrets.facebook_client_id.present? &&
+           Rails.application.secrets.facebook_secret_id.present?) || 
+          (Rails.application.secrets.google_client_id.present? && 
+           Rails.application.secrets.google_secret_id.present?) ||
+          (Rails.application.secrets.openid_connect_client_id.present? && 
+           Rails.application.secrets.openid_connect_secret_id.present?) %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12 social_button_alignment">
+              <% if Rails.application.secrets.facebook_client_id.present? && Rails.application.secrets.facebook_secret_id.present? %>
+                <p>
+                  <%= link_to image_tag('facebook-login-button.png', width: "200"), user_omniauth_authorize_path(:facebook) %>
+                </p>
+              <% end %>
+              <% if Rails.application.secrets.google_client_id.present? && Rails.application.secrets.google_secret_id.present? %>
+                <p>
+                  <%= link_to image_tag('btn_google_signin_dark_normal_web.jpg', width: "200"), user_omniauth_authorize_path(:google_oauth2) %>
+                </p>
+              <% end %>
+              <% if Rails.application.secrets.openid_connect_client_id.present? && Rails.application.secrets.openid_connect_secret_id.present? %>
+                <p>
+                  <%= link_to image_tag('FCboutons-10.jpg', width: "200"), user_omniauth_authorize_path(:openid_connect) %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%= render partial: 'devise/shared/form_registration', locals: {
+      organisation: (resource.organisation || Organisation.new) } %>
+
+  </div>
+</div>
+

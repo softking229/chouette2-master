@@ -1,0 +1,63 @@
+<%= title_tag @referential.name %>
+
+<div class="summary">
+  <p>
+  <label><%= Referential.human_attribute_name("prefix") %>: </label>
+  <%= @referential.prefix %>
+  </p>
+  <p>
+  <label><%= Referential.human_attribute_name("projection_type") %>: </label>
+  <% if ! @referential.projection_type_label.empty? %>
+     <%= @referential.projection_type_label %> (epsg:<%= @referential.projection_type %>)
+  <% end %>
+  </p>
+  <p>
+  <label><%= Referential.human_attribute_name("time_zone").capitalize %>: </label>
+  <%= @referential.time_zone_tzinfo %>
+  </p>
+  <p>
+  <label><%= Referential.human_attribute_name("data_format_restrictions") %>: </label>
+  <%= @referential.data_format %>
+  </p>
+  <p>
+  	<label><%= Referential.human_attribute_name("validity_period") %>: </label>
+  	<% if Chouette::TimeTable.start_validity_period.nil? %>
+  	 <%= Referential.human_attribute_name("no_validity_period") %>
+  	<% else %>
+     <%= Referential.human_attribute_name("start_validity_period") %>
+     <%= l Chouette::TimeTable.start_validity_period %>
+     <%= Referential.human_attribute_name("end_validity_period") %>
+     <%= l Chouette::TimeTable.end_validity_period %>
+   <% end %>
+  </p>
+
+  <table width="100%">
+  	<tr>
+  	  <td valign="top" width="50%">
+        <%= render "counts" %>
+      </td>
+      <td valign="top" >
+        <%= render "validity_out" %>
+      </td>
+    </tr>
+  </table>
+
+  <% if @referential.api_keys.present? %>
+  <h3 class="api_keys"><%= t('.api_keys') %></h3>
+  <div class="api_keys paginated_content">
+    <%= paginated_content(@referential.api_keys, "api_keys/api_key") %>
+  </div>
+  <% end %>
+</div>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('referentials.actions.edit'), edit_referential_path(@referential), :class => "edit" %></li>
+  <li><%= link_to t('referentials.actions.destroy'), referential_path(@referential), :method => :delete, :data => {:confirm =>  t('referentials.actions.destroy_confirm')}, :class => "remove" %></li>
+  <li><%= link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), :class => "add" %></li>
+  <br>
+</ul>
+
+<h4><%= t('.clean_up') %></h4>
+<%= render "clean" %>
+<% end %>

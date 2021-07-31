@@ -1,0 +1,48 @@
+<%= title_tag t('journey_patterns.show.title', :journey_pattern => journey_name( @journey_pattern), :route => @route.name ) %>
+
+<div class="journey_pattern_show">
+  <%= @map.to_html %>
+
+  <div class="summary">
+    <p>
+      <label><%= @journey_pattern.human_attribute_name(:name) %>: </label>
+      <%= @journey_pattern.name %>
+    </p>
+    <p>
+      <label><%= @journey_pattern.human_attribute_name(:published_name) %>: </label>
+      <%= @journey_pattern.published_name %>
+    </p>
+    <p>
+      <label><%= @journey_pattern.human_attribute_name(:registration_number) %>: </label>
+      <%= @journey_pattern.registration_number %>
+    </p>
+    <p>
+      <label><%= @journey_pattern.human_attribute_name(:comment) %>: </label>
+      <%= @journey_pattern.comment %>
+    </p>
+  </div>
+
+</div>
+
+<p class="after_map" />
+<h3 class="journey_pattern_stop_points"><%= t('.stop_points') %></h3>
+<div class="stop_points paginated_content" >
+  <%= paginated_content @stop_points, "stop_points/stop_point" %>
+</div>
+<%= render 'shared/paginate', { datas: @stop_points } %>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), :class => "add" %></li>
+  <li><%= link_to t('journey_patterns.actions.edit'), edit_referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), :class => "edit" %></li>
+  <li><%= link_to t('journey_patterns.actions.destroy'), referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), :method => :delete, :data => {:confirm => t('journey_patterns.actions.destroy_confirm')}, :class => "remove" %></li>
+  <li>
+    <%= link_to edit_referential_line_route_journey_pattern_route_sections_selector_path(@referential, @line, @route, @journey_pattern), class: "edit#{' control-shape' if @journey_pattern.control?}" do %>
+      <%= t('journey_patterns.actions.edit_route_sections') %>
+      <% if @journey_pattern.control? %><i class="fa fa-exclamation-triangle"></i><% end %>
+    <% end %>
+  </li>
+  <li><%= link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => @journey_pattern.id}), :class => "clock" %></li>
+</ul>
+  <%= creation_tag(@journey_pattern) %>
+<% end %>

@@ -1,0 +1,137 @@
+<% text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}" %>
+<% bg_color = @line.color.blank? ? "white" : "#"+@line.color %>
+
+<%= title_tag t('lines.show.title', :line => @line.name ) %>
+
+<div class="line_show">
+  <%= @map.to_html %>
+
+  <div class="summary">
+    <% text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}" %>
+    <% bg_color = @line.color.blank? ? "white" : "#"+@line.color %>
+    <% if colors?(@line) %>
+	    <p>
+	    	<label><%= t('lines.index.color') %>: </label>
+	    	<label class="color" style='<%="#{number_style(@line)}"%>'><%= line_sticker(@line) %></label>
+	    </p>	
+    <% end %>
+    <p>
+      <label><%= @line.human_attribute_name(:network) %>: </label>
+  	<% if @line.network.nil? %>
+  	   <%= t('lines.index.unset') %> 
+  	<% else %>
+      <%= link_to @line.network.name, [@referential, @line.network] %>
+    <% end %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name(:company) %>: </label>
+  	<% if @line.company.nil? %>
+  	   <%= t('lines.index.unset') %>
+  	<% else %>
+      <%= link_to @line.company.name, [@referential, @line.company] %>
+    <% end %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("number") %>: </label>
+      <%= @line.number %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("published_name") %>: </label>
+      <%= @line.published_name %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("registration_number") %>: </label>
+      <%= @line.registration_number %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("transport_mode") %>: </label>
+      <%= t("transport_modes.label.#{@line.transport_mode}") %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("stable_id") %>: </label>
+      <%= @line.stable_id %>
+    </p>
+
+    <p>
+      <label><%= @line.human_attribute_name("url") %>: </label>
+      <%= @line.url %>
+    </p>
+
+    <p>
+      <label><%= @line.human_attribute_name("mobility_restricted_suitability") %> : </label>
+      <% if @line.mobility_restricted_suitability.nil? %>
+      <%= @line.human_attribute_name("unspecified_mrs") %>
+      <% elsif @line.mobility_restricted_suitability? %>
+      <%= @line.human_attribute_name("accessible") %>
+      <% else %>
+      <%= @line.human_attribute_name("not_accessible") %>
+      <% end %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_mrs_vj") %> : <%= @line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_non_mrs_vj") %> : <%= @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_null_mrs_vj") %> : <%= @line.vehicle_journeys.count -
+										       (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + 
+										       @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count) %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("flexible_service") %> : </label>
+      <% if @line.flexible_service.nil? %>
+      <%= @line.human_attribute_name("unspecified_fs") %>
+      <% elsif @line.flexible_service? %>
+      <%= @line.human_attribute_name("on_demaond_fs") %>
+      <% else %>
+      <%= @line.human_attribute_name("regular_fs") %>
+      <% end %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_fs_vj") %> : <%= @line.vehicle_journeys.where("flexible_service = ?", true).count %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_non_fs_vj") %> : <%= @line.vehicle_journeys.where("flexible_service = ?", false).count %>
+      <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_null_fs_vj") %>
+      <% if @line.flexible_service.nil? %>
+      (<%= @line.human_attribute_name("default_fs_msg") %>)
+      <% end %>
+      : <%= @line.vehicle_journeys.count - 
+	    (@line.vehicle_journeys.where("flexible_service = ?", true).count + 
+	    @line.vehicle_journeys.where("flexible_service = ?", false).count) %>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("footnotes") %>: </label>
+      <ul>
+        <% @line.footnotes.each do |footnote| %>
+        <li><%= footnote.code %> : <%= footnote.label %></li>          
+      <% end %>
+      </ul>
+    </p>
+    <p>
+      <label><%= @line.human_attribute_name("comment") %>: </label>
+      <%= @line.comment %>
+    </p>
+  </div>
+
+  <div class="row">
+    <div id="mobility_restricted_suitability" class="col-md-6"></div>
+    <div id="flexible_service" class="col-md-6"></div>
+  </div>
+</div>
+
+<p class="after_map" />
+<h3 class="routes"><%= t('.itineraries') %></h3>
+<div class="routes paginated_content">
+  <%= paginated_content @routes, "routes/route" %>
+</div>
+
+<% if @line.group_of_lines.any? %>
+  <h3 class="line_group_of_lines"><%= t('.group_of_lines') %></h3>
+  <div class="group_of_lines paginated_content">
+     <%= paginated_content @group_of_lines, "group_of_lines/group_of_line", :delete => false %>
+  </div>
+<% end %>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('lines.actions.new'), new_referential_line_path(@referential), :class => "add" %></li>
+  <li><%= link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), :class => "edit" %></li>
+  <li><%= link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), :method => :delete, :data => {:confirm =>  t('lines.actions.destroy_confirm')}, :class => "remove" %></li>
+  <% if !@line.format_restricted?(:hub) || (@line.format_restricted?(:hub) && @line.routes.size < 2) %>
+    <li><%= link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), :class => "add" %></li>
+  <% end %>
+</ul>
+  <%= creation_tag(@line) %>
+<% end %>

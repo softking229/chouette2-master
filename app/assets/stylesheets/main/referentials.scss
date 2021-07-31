@@ -1,0 +1,48 @@
+// Place all the styles related to the referentials controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#workspace.referentials.index
+{
+}
+
+#workspace.referentials.show
+{
+    .summary p label {
+        font-weight: bold;
+    }
+    
+    .panel{
+        font-size:12px;
+        width: 75%;
+
+        .panel-heading{ font-weight: bold;}
+
+        li.list-group-item {
+            padding: 5px 15px;
+        }
+    }
+    
+}
+#sidebar div#clean_up {
+    form {    
+        fieldset {
+            li{
+                margin-bottom: 0px;
+            }
+
+            li.date {
+
+                input{
+                    width: 125px;
+                    font-size: 12px;
+                    height: 25px
+                }
+                label{
+                    width: 35%;
+                }
+            }
+        }
+
+    }
+}

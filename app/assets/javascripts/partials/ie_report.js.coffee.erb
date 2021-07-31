@@ -1,0 +1,22 @@
+$(".imports.show, .exports.show, .compliance_checks.show").ready ->
+
+  refreshInterval = $(".report").data("refresh-interval")
+  if refreshInterval > 0
+    reloadPage = () -> window.location.reload()
+    setInterval(reloadPage,refreshInterval * 1000)
+
+  footableFilter = (parent, el) ->
+    no_pagination = $(parent).data('no-pagination') != true
+    $(parent).footable( { paginate: no_pagination } ).bind 'footable_filtering', (e) ->
+      selected =  $("select#{el} option:selected").val()
+      if selected and selected.length > 0
+        e.filter += if e.filter and e.filter.length > 0 then ' ' + selected else selected
+        e.clear = !e.filter
+      return
+    $("select#{el}").change (e) ->
+      e.preventDefault()
+      $(parent).trigger 'footable_filter', filter: $("select#{el} option:selected").val()
+      return
+
+  footableFilter('#table-file', '.filter-file-status')
+  footableFilter('#table-line', '.filter-line-status')

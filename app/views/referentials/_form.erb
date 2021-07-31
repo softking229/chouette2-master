@@ -1,0 +1,16 @@
+<%= semantic_form_for @referential, :class => "form-horizontal" do |form| %>
+  <%= form.inputs do %>
+    <%= form.input :name %>
+    <%= form.input :prefix, :input_html => { :title => t("formtastic.titles.referential.prefix")} %>
+    <%= form.input :projection_type, :as => :select, :collection => Referential.available_srids %>
+    <%= form.input :time_zone %>
+    <%= form.input :upper_corner, :input_html => { :title => t("formtastic.titles.referential.upper_corner")} %>
+    <%= form.input :lower_corner, :input_html => { :title => t("formtastic.titles.referential.lower_corner")} %>
+    <%= form.input :data_format, :label => true, :include_blank => false %>
+  <% end %>
+
+  <%= form.actions do %>
+    <%= form.action :submit, :as => :button %>
+    <%= form.action :cancel, :as => :link %>
+  <% end %>
+<% end %>

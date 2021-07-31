@@ -1,0 +1,26 @@
+// Place all the styles related to the Exports controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#workspace.exports.index
+{
+  .panel.export {
+    .panel-footer {
+      .history {
+        margin-top: 5px;
+      }
+    }                  
+  }
+}
+
+#workspace.exports.show {
+  @import "../partials/ie_report";
+  @import "../modules/job_status_colors";
+  @import "../modules/job_status_title";
+  @import "../modules/links";
+
+  .export-attributes {
+    font-size: 1.7em;
+    margin-top: 20px;
+  }
+}

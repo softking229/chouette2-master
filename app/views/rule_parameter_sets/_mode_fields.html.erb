@@ -1,0 +1,12 @@
+  <td><%= t("transport_modes.label.#{mode}") %></td>
+  <% RuleParameterSet.mode_attribute_prefixes.each do |prefix| %>
+    <% if prefix == "allowed_transport" %>
+    <% hidden = (@rule_parameter_set.check_allowed_transport_modes == "1") ? "" : 'display: none;'%>
+    <td class="allowed" style="<%= hidden %>" >
+      <%= f.check_box "#{prefix}_mode_#{mode}".to_sym, :class => "special" %>
+    <% else%>
+    <td>
+      <%= f.number_field "#{prefix}_mode_#{mode}".to_sym,  :class => "special" %>
+    <% end %>
+    </td>
+  <% end %>

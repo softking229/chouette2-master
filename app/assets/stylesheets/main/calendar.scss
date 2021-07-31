@@ -1,0 +1,113 @@
+/*
+  A grey based theme, inspired by Blinksale and their ColorBurn widget. http://firewheeldesign.com
+  
+  AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
+  
+  Colors: 
+    dk: 787888
+    lt: 4f4f5b
+    lter: a8a8a8
+    white: ffffff
+*/
+
+$selected_period_color: #ffbd2b;
+$selected_date_color: #8fc861;
+$excluded_date_color: #ff8f85;
+$overlap_date_color: #c082f4;
+
+.year_choice{
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+    text-align: center;
+    
+    .year{ 
+        text-align: center;
+
+    }   
+
+}
+
+.calendar_helper{     
+    padding: auto; 
+}
+
+.calendar {
+    font-size: 10px;
+    color: white;
+    text-align: center;
+    margin-left: 15px;
+    display: inline-table;
+}
+
+thead tr {
+    color: black;
+}
+
+th.monthName {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 0.7em;
+    color: black;
+}
+
+.dayName th {
+    text-align: center;
+    padding-top: 0.6em;
+    padding-bottom: 0.3em;
+    background-color: #303030;
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.otherMonth {
+    color: #999999;
+    background-color: #4f4f5b;
+    padding: 0.7em;
+    border-right: 1px solid #111111;
+    border-bottom: 1px solid #111111;
+}
+
+.day {
+    background-color: #333333;
+}
+
+.day, .specialDay {
+    border-bottom: 1px solid #111111;
+    padding: 0.7em;
+    border-right: 1px solid #111111;
+    border-bottom: 1px solid #111111;
+}
+
+.specialDay { background-color: #a8a8a8 !important; }
+
+.selected_period  { background-color: $selected_period_color !important; }
+
+.selected_date  { background-color: $selected_date_color !important; }
+
+.excluded_date  { background-color: $excluded_date_color !important; }
+
+.overlaped_date { background-color: $overlap_date_color !important; }
+
+.specialDay, .selected_period, .selected_date, .overlaped_date, .excluded_date {
+    a, a:visited, a:hover {
+                      color: white;
+                      text-decoration: none;
+                  }
+}
+
+.specialDay a:hover, selected_period a:hover, selected_date a:hover, excluded_date a:hover, overlaped_date a:hover{
+                                                                                                color: black;
+                                                                                            }
+
+.weekendDay {
+    background-color: #787888;
+}
+.today {
+	  background-color: white;
+	  color: black;
+}
+
+

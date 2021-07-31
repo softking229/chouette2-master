@@ -1,0 +1,57 @@
+<%= title_tag t('companies.show.title', :company => @company.name) %>
+
+<div class="company_show">
+
+  <div class="summary">
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("short_name") %>: </label>
+      <%= @company.short_name %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("organizational_unit") %>: </label>
+      <%= @company.organizational_unit %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("operating_department_name") %>: </label>
+      <%= @company.operating_department_name %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("code") %>: </label>
+      <%= @company.code %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("phone") %>: </label>
+      <%= @company.phone %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("fax") %>: </label>
+      <%= @company.fax %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("email") %>: </label>
+      <%= @company.email %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("time_zone") %>: </label>
+      <%= @company.time_zone %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("url") %>: </label>
+      <%= @company.url %>
+    </p>
+    <p>
+      <label><%= Chouette::Company.human_attribute_name("registration_number") %>: </label>
+      <%= @company.registration_number %>
+    </p>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('companies.actions.new'), new_referential_company_path(@referential), :class => "add" %></li>
+  <li><%= link_to t('companies.actions.edit'), edit_referential_company_path(@referential, @company), :class => "edit" %></li>
+  <li><%= link_to  t('companies.actions.destroy'), referential_company_path(@referential, @company), :method => :delete,  :data => {:confirm =>  t('companies.actions.destroy_confirm')}, :class => "remove" %></li>
+  <br>
+</ul>
+  <%= creation_tag(@company) %>
+<% end %>

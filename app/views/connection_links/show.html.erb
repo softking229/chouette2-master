@@ -1,0 +1,102 @@
+<%= title_tag t('connection_links.show.title', :connection_link => @connection_link.name ) %>
+
+<div class="connection_link_show">
+  <%= @map.to_html %>
+  
+  <div class="summary">
+    <p>
+      <label><%= @connection_link.human_attribute_name(:departure) %>: </label>
+      <% if @connection_link.departure.present? %> 
+        <%= link_to @connection_link.departure.name, [@referential, @connection_link.departure] %>
+      <% else %>
+         <%= @connection_link.human_attribute_name("undefined") %>  
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name(:arrival) %>: </label>
+      <% if @connection_link.arrival.present? %> 
+         <%= link_to @connection_link.arrival.name, [@referential, @connection_link.arrival] %>
+      <% else %>
+         <%= @connection_link.human_attribute_name("undefined") %>  
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("connection_link_type") %>: </label>
+      <% if @connection_link.connection_link_type.blank? %>
+        <%=t("unknown") %>
+      <% else %>
+        <%= t("connection_link_types.label.#{@connection_link.connection_link_type}") %>
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("comment") %>: </label>
+      <%= @connection_link.comment %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("link_distance") %>: </label>
+      <%= @connection_link.link_distance %> 
+    </p>
+    <p>
+      <label><%= t('connection_links.show.durations') %> </label>
+    </p>
+    <p>
+      <label class='duration'><%= @connection_link.human_attribute_name("default_duration") %>: </label>
+      <% if (@connection_link.default_duration.present?) %>
+         <%= @connection_link.default_duration.strftime('%Hh %Mm %Ss') %>
+      <% end %>
+    </p>
+    <p>
+      <label class='duration'><%= @connection_link.human_attribute_name("frequent_traveller_duration") %>: </label>
+      <% if (@connection_link.frequent_traveller_duration.present?) %>
+         <%= @connection_link.frequent_traveller_duration.strftime('%Hh %Mm %Ss') %>
+      <% end %>
+    </p>
+    <p>
+      <label class='duration'><%= @connection_link.human_attribute_name("occasional_traveller_duration") %>: </label>
+      <% if (@connection_link.occasional_traveller_duration.present?) %>
+         <%= @connection_link.occasional_traveller_duration.strftime('%Hh %Mm %Ss') %>
+      <% end %>
+    </p>
+    <p>
+      <label class='duration'><%= @connection_link.human_attribute_name("mobility_restricted_traveller_duration") %>: </label>
+      <% if (@connection_link.mobility_restricted_traveller_duration.present?) %>
+         <%= @connection_link.mobility_restricted_traveller_duration.strftime('%Hh %Mm %Ss') %>
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("mobility_restricted_suitability") %>: </label>
+      <% if (!@connection_link.mobility_restricted_suitability.nil?) %>
+        <%= t((@connection_link.mobility_restricted_suitability == true).to_s) %>
+      <% else %>
+         <%=t("unknown") %>
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("stairs_availability") %>: </label>
+      <% if (!@connection_link.stairs_availability.nil?) %>
+         <%= t((@connection_link.stairs_availability == true).to_s) %>
+      <% else %>
+         <%=t("unknown") %>
+      <% end %>
+    </p>
+    <p>
+      <label><%= @connection_link.human_attribute_name("lift_availability") %>: </label>
+      <% if (!@connection_link.lift_availability.nil?) %>
+         <%= t((@connection_link.lift_availability == true).to_s) %>
+      <% else %>
+         <%=t("unknown") %>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('connection_links.actions.new'), new_referential_connection_link_path(@referential), :class => "add" %></li> 
+  <li><%= link_to t('connection_links.actions.edit'), edit_referential_connection_link_path(@referential, @connection_link), :class => "edit" %></li>
+  <li><%= link_to t('connection_links.actions.destroy'), referential_connection_link_path(@referential, @connection_link), :method => :delete,  :data => {:confirm =>  t('connection_links.actions.destroy_confirm')}, :class => "remove" %></li>
+  <li><%= link_to t('connection_links.actions.select_areas'), select_areas_referential_connection_link_path(@referential, @connection_link), :class => "select" %></li>
+  <br>
+</ul>
+  <%= creation_tag(@connection_link) %>
+<% end %>

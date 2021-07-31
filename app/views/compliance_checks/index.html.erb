@@ -1,0 +1,11 @@
+<%= title_tag t('.title') %>
+<div class="warning"><%= t('.warning') %> </div>
+
+<div id="compliance_checks"><%= render 'compliance_checks' %></div>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('compliance_check_tasks.actions.new'), new_referential_compliance_check_task_path(), :class => "add" %></li>
+  <li><%= link_to t('rule_parameter_sets.actions.index'), organisation_rule_parameter_sets_path, :class => "link" %></li>
+</ul>
+<% end %>

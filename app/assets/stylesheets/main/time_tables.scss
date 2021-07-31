@@ -1,0 +1,160 @@
+// Place all the styles related to the lines controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#workspace.time_tables.index
+{
+}
+
+
+#workspace.time_tables.show
+{
+    .modal-body{overflow-y: visible;}    
+
+    .summary{
+        margin-top: 20px;
+
+        p label {
+            font-weight: bold;
+        }
+    }
+
+    .legend{
+        margin-top: 20px;
+
+        .title{ font-weight: bold; }            
+        
+        .excluded_date, .overlaped_date, .selected_date, .selected_period{
+            margin-left: 20px;
+            margin-right: 5px;
+        }
+    }
+    
+    .typeahead.dropdown-menu {
+        z-index: 100001;
+    }
+    
+    .validity_out {
+        color: $brand-danger;
+    }
+    
+    .validity_out_soon {
+        color: $brand-warning;
+    }
+    
+    .validity_regular {
+        color: $brand-success;
+    }
+
+    span.included_day_type {
+        font-weight: bolder;
+        margin-right: 3px;
+    }
+
+    span.excluded_day_type {
+        margin-right: 3px;
+    }
+    
+    .period {
+        padding-left:50px;
+        padding-right:450px;
+    }
+
+    .date {
+        padding-left:50px;
+    }
+    
+    .odd {
+        padding-left:50px;
+        padding-right:450px;
+    }
+    
+    .even {
+        padding-left:50px;
+        padding-right:450px;
+    }
+
+    .actions {
+        float: right;
+    }
+}
+
+#workspace.time_tables.edit,#workspace.time_tables.new,#workspace.time_tables.create,#workspace.time_tables.update,#workspace.time_tables.duplicate
+{
+    fieldset.inputs{
+        overflow: visible !important;
+
+        .tags{
+            overflow: visible !important;
+        }
+    }
+
+    h3 {
+        .dates {
+            cursor: pointer;
+        }
+        .periods {
+            cursor: pointer;
+        }
+        .excluded_dates {
+            cursor: pointer;
+        }
+    }
+
+    #dates,#excluded_dates,#periods{
+        .nested-fields {
+            margin: 5px;
+
+            ol {
+                li {
+                    display: inline;
+                }
+            }
+        }
+
+        margin-left: 25%;
+    }
+
+    .day_type ol {
+        float: left;
+        margin: 0;
+        padding: 0 0 0 0;
+        width: 100%;
+        list_style: none outside none;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    .day_type ol li {
+        float: left;
+        margin: 0 O 0 0;
+        width: auto;
+        padding: 0;
+    }
+    .day_type_label {
+        float: left;
+        margin-top: 0;
+        width: 25%;
+    }
+    .day_type ol li label {
+        padding-left: 10%;
+        margin-top: 0;
+    }
+
+    a.add_fields {
+        margin-left: 25%;
+        margin-top: 20px;
+        padding-left: 18px;
+        background: url(image-path('icons/add.png')) no-repeat 0% 50%;
+    }
+
+    a.remove_fields {
+        margin-left: 10px;
+        padding-left: 18px;
+        background: url(image-path('icons/remove.png')) no-repeat 0% 50%;
+    }
+
+    .actions{
+        margin-top: 20px;
+    }
+
+}

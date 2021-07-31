@@ -1,0 +1,38 @@
+<div id="index_item" class="panel panel-default journey_pattern">
+  <div class="panel-heading">
+    <div class="panel-title clearfix">
+      <% if policy(:application).write? %>
+        <span class="pull-right">
+          <%= link_to referential_line_route_journey_pattern_path(@referential, @line, @route, journey_pattern), :method => :delete, :data => {:confirm =>  t('journey_patterns.actions.destroy_confirm')}, :class => "btn btn-danger btn-sm" do %>
+            <span class="fa fa-trash-o"></span>
+          <% end %>
+        </span>
+      <% end %>
+      <h5>
+        <%= link_to([@referential, @line, @route, journey_pattern], :class => "preview", :title => "#{Chouette::JourneyPattern.model_name.human.capitalize} #{journey_name(journey_pattern)}") do %>
+        <span class="name">
+          <%= truncate(journey_name(journey_pattern), :length => 20) %>
+        </span>
+        <% end %>
+      </h5>
+    </div>
+  </div>
+  <div class="panel-body">
+    <% unless journey_pattern.stop_points.empty? %>
+      <p><%= t('.from_to', :departure => journey_pattern.stop_points.first.stop_area.name, :arrival => journey_pattern.stop_points.last.stop_area.name) %></p>
+    <% end %>
+    <p><%= t('.stop_count', :count => journey_pattern.stop_points.count, :route_count => @route.stop_points.count) %> | <%= t('.vehicle_journeys_count', :count => journey_pattern.vehicle_journeys.count) %></p>
+    <% if journey_pattern.vehicle_journeys.count > 0 %>
+      <p>
+        <i class="fa fa-clock-o"></i>
+        <%= link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => journey_pattern.id}), :class => "with_fa" %>
+      </p>
+      <% if exist_vehicle_journey_frequencies?(@route, journey_pattern) %>
+        <p>
+          <i class="fa fa-clock-o"></i>
+          <%= link_to t('vehicle_journey_frequencies.actions.index'), referential_line_route_vehicle_journey_frequencies_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => journey_pattern.id}) %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

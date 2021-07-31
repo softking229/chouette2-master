@@ -1,0 +1,50 @@
+class ComplianceCheckTasksController < ChouetteController
+  before_action :check_authorize, except: [:show, :index, :references]
+
+  defaults :resource_class => ComplianceCheckTask
+
+  respond_to :html, :only => [:new, :create]
+  respond_to :js, :only => [:new, :create]
+
+  belongs_to :referential
+
+  def new
+    begin
+      new!
+    rescue Ievkitdeprecated::Error, Faraday::Error => error
+      logger.error("Iev failure : #{error.message}")
+      flash[:error] = t(error.locale_for_error)
+      redirect_to referential_path(@referential)
+    end
+  end
+
+  def create
+    begin
+      create! do |success, failure|
+        success.html { redirect_to referential_compliance_checks_path(@referential) }
+      end
+    rescue Ievkitdeprecated::Error, Faraday::Error => error
+      logger.error("Iev failure : #{error.message}")
+      flash[:error] = t(error.locale_for_error)
+      redirect_to referential_path(@referential)
+    end
+  end
+
+  def references
+    references_type = params[:filter].pluralize
+    references = @referential.send(references_type).where("name ilike ?", "%#{params[:q]}%").select("id, name")
+    respond_to do |format|
+      format.json do
+        render :json => references.collect { |child| { :id => child.id, :name => child.name } }
+      end
+    end
+  end
+
+  protected
+
+  def build_resource
+    @compliance_check_task ||= ComplianceCheckTask.new( params[:compliance_check_task] || {} )
+  end
+
+
+end

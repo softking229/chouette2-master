@@ -1,0 +1,20 @@
+<% require 'calendar_helper' %>
+
+<%= title_tag t('time_tables.show.title', :time_table => @time_table.comment )%>
+
+<%= render "time_table_combinations/combine" %>
+
+<%= render "show_time_table" %>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), :class => "add" %></li>
+  <li><%= link_to t('time_tables.actions.edit'), edit_referential_time_table_path(@referential, @time_table), :class => "edit" %></li>
+  <li><%= link_to t('time_tables.actions.destroy'), referential_time_table_path(@referential, @time_table), :method => :delete, :data => {:confirm =>  t('time_tables.actions.destroy_confirm')}, :class => "remove" %></li>
+  <li><%= link_to t('time_tables.actions.duplicate'), duplicate_referential_time_table_path(@referential, @time_table), :class => "clone" %></li>
+  <li><%= link_to t('time_tables.actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', :class => "merge"} %></li>
+</ul>
+
+
+  <%= creation_tag(@time_table) %>
+<% end %>

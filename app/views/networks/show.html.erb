@@ -1,0 +1,49 @@
+<%= title_tag t('networks.show.title', :network => @network.name )%>
+
+<div class="network_show">
+  <%= @map.to_html %>
+  <div class="summary">
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("registration_number") %>: </label>
+      <%= @network.registration_number %>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("comment") %>: </label>
+      <%= @network.comment %>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("version_date") %>: </label>
+      <% if @network.version_date.present? %>
+        <%= l @network.version_date  %>
+      <%end%>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("description") %>: </label>
+      <%= @network.description %>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("source_name") %>: </label>
+      <%= @network.source_name %>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("source_type_name") %>: </label>
+      <% if @network.source_type_name.present? %>
+        <%= t("source_types.label.#{@network.source_type_name}") %>
+      <% end %>
+    </p>
+    <p>
+      <label><%= Chouette::Network.human_attribute_name("source_identifier") %>: </label>
+      <%= @network.source_identifier %>
+    </p>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+<ul class="actions">
+  <li><%= link_to t('networks.actions.new'), new_referential_network_path(@referential), :class => "add" %></li>
+  <li><%= link_to t('networks.actions.edit'), edit_referential_network_path(@referential, @network), :class => "edit" %></li>
+  <li><%= link_to  t('networks.actions.destroy'), referential_network_path(@referential, @network), :method => :delete, :data => {:confirm =>  t('networks.actions.destroy_confirm')}, :class => "remove" %></li>
+  <br>
+</ul>
+  <%= creation_tag(@network) %>
+<% end %>

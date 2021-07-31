@@ -1,0 +1,23 @@
+// Place all the styles related to the lines controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#workspace.group_of_lines.index
+{
+}
+
+#workspace.group_of_lines.show
+{
+    .summary p label {
+        font-weight: bold;
+    }
+    .lines_detail div.page_info {
+        margin-top: 0px;
+    }   
+
+    .lines {
+        margin-top: 10px;
+    }
+
+}
+

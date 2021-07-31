@@ -1,0 +1,29 @@
+<div class="vehicle_journey_at_stops content">
+  <table class="table-striped ce-VehicleJourneyAtStopFormTable">
+    <thead>
+      <tr>
+        <th class="stop title" ><%= t('vehicle_journeys.show.stop_title') %></th>
+        <th></th>
+        <th class="hour title"><%= t('vehicle_journeys.show.arrival') %></th>
+        <th class="hour title"><%= t('vehicle_journeys.show.departure') %></th>
+      </tr>
+    <thead>
+    <tbody>
+      <% @vehicle_journey_frequency.vehicle_journey_at_stops.each do |vjas| %>
+        <tr class="<%= cycle :odd, :even %>">
+          <td><%= link_to vjas.stop_point.stop_area.name, [@referential, vjas.stop_point.stop_area] %></td>
+          <td class="ce-VehicleJourneyAtStopFormTable-circleLine">
+            <span class="ce-VehicleJourneyAtStopFormTable-circle"></span>
+            <span class="ce-VehicleJourneyAtStopFormTable-line"></span>
+          </td>
+          <td class="hour <%= 'missing' if vjas.arrival_time.nil? %>">
+            <%= l(vjas.arrival_time, format: :hour) if vjas.arrival_time %>
+          </td>
+          <td class="hour <%= 'missing' if vjas.departure_time.nil? %>">
+            <%= l(vjas.departure_time, format: :hour) if vjas.departure_time %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

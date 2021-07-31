@@ -1,0 +1,99 @@
+<%= title_tag t('vehicle_journeys.index.title', :route => @route.name ) %>
+
+<%= search_form_for @q, :url => referential_line_route_vehicle_journeys_path(@referential,@line,@route), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f| %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= f.label :journey_pattern_id_eq, "Missions" %>
+    <%= f.text_field(:journey_pattern_id_eq, :class => "form-control") %>
+    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+    <a data-toggle="collapse" data-parent="#search" href="#advanced_search" class="advanced_search">
+      <i class="fa fa-plus"></i> <%= "#{t('.advanced_search')}" %>
+    </a>
+  </div>
+
+  <div id="advanced_search" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div>
+        <%= f.label :time_tables_id_not_eq, "Sans calendrier" %>
+        <%= f.check_box :time_tables_id_not_eq %>
+
+        <span class="time_tables_id_eq">
+          <%= f.label :time_tables_id_eq, "Sélectionner calendriers" %>
+          <%= f.text_field :time_tables_id_eq, :input_html => { :"data-pre" => [].to_json} %>
+        </span>
+      </div>
+      <% if controller_name != 'vehicle_journey_frequencies' %>
+        <div>
+          <%= f.label :vehicle_journey_at_stops_departure_time_not_eq, "Sans horaire" %>
+          <%= f.check_box :vehicle_journey_at_stops_departure_time_not_eq %>
+
+          <span class="vehicle_journey_at_stops_departure_time_gt">
+            <input name=<%= "q[vehicle_journey_at_stops_departure_time_gteq(3i)]" %> type="hidden" value="1">
+            <input name=<%= "q[vehicle_journey_at_stops_departure_time_gteq(2i)]" %> type="hidden" value="1">
+            <input name=<%= "q[vehicle_journey_at_stops_departure_time_gteq(1i)]" %> type="hidden" value="2000">
+            <%= f.label :vehicle_journey_at_stops_departure_time_gt, t('.time_range') %>
+            <%= select_hour(@q.send( "vehicle_journey_at_stops_departure_time_gteq") ? @q.send( "vehicle_journey_at_stops_departure_time_gteq").hour : 0,
+                             :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gteq(4i)") %>
+            <%= select_minute(@q.send( "vehicle_journey_at_stops_departure_time_gteq") ? @q.send( "vehicle_journey_at_stops_departure_time_gteq").min : 0,
+                               :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gteq(5i)") %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+<div id="vehicle_journeys" ><%= render "vehicle_journeys" %></div>
+
+<% content_for :sidebar do %>
+  <%= render "sidebar" %>
+<% end %>
+<script>
+	$(function() {
+        var time_tables_url = function(){
+          return '<%= referential_autocomplete_time_tables_path(@referential, :format => :json) %>?route_id=<%= @route.id %>';
+        };
+        var time_table_formatter = function(item){
+          var day_types = '';
+          if ( item.day_types.length >0 ){
+            day_types = '<span class=\"day_types\">' +  item.day_types + '</span>' ;
+          }
+          var tags = '';
+          if ( item.tags.length >0 ){
+            tags = '<div class=\"info\">' +  item.tags + '</div>' ;
+          }
+          return '<li><div class=\"comment\">' + item.comment +
+                  '</div><div class=\"info\">' + item.time_table_bounding + '  ' + day_types + '</div>' +
+                  tags + '</li>';
+        };
+		$( "#q_time_tables_id_eq" ).tokenInput( time_tables_url, {
+          crossDomain: false,
+          prePopulate: $('#q_time_tables_id_eq').data('pre'),
+          minChars: 2,
+          propertyToSearch: 'comment',
+          hintText: '<%= t('search_hint') %>',
+          noResultsText: '<%= t('no_result_text') %>',
+          searchingText: '<%= t('searching_term') %>',
+          resultsFormatter: time_table_formatter,
+          tokenFormatter: time_table_formatter
+        });
+		$( "#q_journey_pattern_id_eq" ).tokenInput( '<%= referential_line_route_journey_patterns_path(@referential, @line, @route, :format => :json) %>', {
+          crossDomain: false,
+          minChars: 1,
+          queryParam: 'q[name_cont]',
+          propertyToSearch: 'name',
+          hintText: '<%= t('search_hint') %>',
+          noResultsText: '<%= t('no_result_text') %>',
+          searchingText: '<%= t('searching_term') %>',
+          prePopulate: [ <%= "{ id: #{@vehicle_filter.journey_pattern.id}, name: '#{@vehicle_filter.journey_pattern.name}' }".html_safe if @vehicle_filter.journey_pattern %> ],
+          resultsFormatter: function(item){ return '<li><div class=\"name\">' + item.name + ', (' + item.id + ') </div></li>' },
+        });
+        $( 'input[name="q[time_tables_id_not_eq]"]').change( function(){
+            $('span.time_tables_id_eq').toggle( $(this).filter(":checked").val()==undefined);
+        });
+        $( 'input[name="q[vehicle_journey_at_stops_departure_time_not_eq]"]').change( function(){
+            $('span.vehicle_journey_at_stops_departure_time_gt').toggle( $(this).filter(":checked").val()==undefined);
+        });
+
+	});
+</script>

@@ -1,0 +1,18 @@
+<div class="col-md-offset-2 col-md-8">
+  <div class="panel panel-default">
+    <div class="panel-heading"><%= t('.title') %></div>
+    <div class="panel-body">
+      <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, class: "form-horizontal" }) do |f| %>
+
+      <%= f.input :reset_password_token, :as => :hidden %>
+      <%= f.input :password, :as => :password %>
+      <%= f.input :password_confirmation, :as => :password %>
+      
+      <div class="form-actions">
+        <%= link_to t("cancel"), unauthenticated_root_path, :class => "btn btn-default" %>    
+        <%= f.button :submit, :value => t("devise.passwords.edit.commit"), :class => "btn-info" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title>Chouette - <%= title %></title>
+    <%= favicon_link_tag "logo_chouette_small.ico" %>
+    <%= favicon_link_tag 'logo_chouette_small.png', rel: 'apple-touch-icon', type: 'image/png' %>
+    <%= stylesheet_link_tag :application %>
+    <%= javascript_include_tag :application %>
+    <% if defined?( @map) %>
+      <script src="http://maps.googleapis.com/maps/api/js?v=3&key=<%= Rails.application.secrets.google_api_key %>"></script>
+      <script src="http://openlayers.org/api/OpenLayers.js"></script>
+      <script type="text/JavaScript">
+        OpenLayers.ImgPath = "<%= polymorphic_path_patch("/assets/openlayers/") %>";
+      </script>
+    <% end %>
+    <%= analytics_init if Rails.application.secrets.google_analytics_tracker.present? && GoogleAnalytics.valid_tracker? && Rails.env.production? %>
+    <%= csrf_meta_tag %>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+  </head>
+  <body>
+    <div id="header">
+      <%= render partial: "shared/header" %>
+    </div>
+    <div id="middle" class="container">
+      <div class="row">
+        <div class="<%= content_for?(:sidebar) && policy(:application).write? ? 'col-md-9' : 'col-md-12' %>">
+          <div id="workspace" class="<%= controller_name %> <%= action_name %>">
+            <%= render partial: "shared/flash_messages", flash: flash %>
+            <%= render partial: "shared/breadcrumb" %>
+            <%= yield %>
+          </div>
+        </div>
+        <% if policy(:application).write? %>
+          <div id="sidebar" class="<%= content_for?(:sidebar) ? 'col-md-3' : '' %>">
+            <%= yield :sidebar %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="footer">
+      <%= render partial: "shared/footer" %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+<div id="registrations_new" class="col-lg-offset-4 col-lg-4">
+<%= render partial: 'devise/shared/form_registration', locals: {
+  organisation: (resource.organisation || Organisation.new)
+} %>
+</div>

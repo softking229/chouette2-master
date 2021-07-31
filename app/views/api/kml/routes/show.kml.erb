@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name><%= h(Chouette::Route.model_name.human) %> : <%= h(@route.name) %></name>
+    <Placemark id="<%= @route.objectid %>" >
+      <name><%= h(@route.name) %></name>
+      <ExtendedData>
+      <% [:direction_code, :wayback_code, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :published_name, :number, :direction, :wayback].each do |prop| %>
+        <Data name="<%= prop.to_s %>">
+          <value><%= h(@route.send( prop)) %></value>
+        </Data>
+      <% end %>
+        <Data name="line_objectid">
+          <value><%= h(@route.line.objectid) %></value>
+        </Data>
+      </ExtendedData>
+      <%= @route.geometry_presenter.geometry.kml_representation.html_safe %>
+    </Placemark>
+  </Document>
+</kml>
+

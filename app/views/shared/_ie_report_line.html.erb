@@ -1,0 +1,71 @@
+<p class='lead'>
+  <dl class="inline">
+    <dt><%=t('.read_lines') %> :</dt>
+    <dd><%= job.report.lines %></dd>
+    <dt><%=t('.saved_lines') %> :</dt>
+    <dd><%= job.report.saved_lines %></dd>
+    <dt><%=t('.unsaved_lines') %> :</dt>
+    <dd><%= job.report.unsaved_lines %></dd>
+  </dl>
+</p>
+<div class="report" data-refresh-interval="<%= job_refresh_interval(job) %>">
+  <p>
+    <form class="form-inline">
+      <div class="form-group">
+        <label><%= t("shared.ie_report.search") %></label>
+        <input id="filter-line" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label><%= t(".table.line.state") %></label>
+        <select class="filter-line-status form-control">
+          <option></option>
+          <option value="true"><%=t(".state.#{type}.valid") %></option>
+          <option value="false"><%=t(".state.#{type}.invalid") %></option>
+        </select>
+      </div>
+    </form>
+  </p>
+  <table class="table table-hover table-striped data-table toggle-circle toggle-medium" data-filter="#filter-line" id="table-line" data-page-size="20"<% if line_items.respond_to?(:total_pages) %> data-no-pagination="true"<% end %>>
+    <thead>
+      <tr>
+        <th><%= t(".table.line.state") %></th>
+        <th><%= t(".table.line.lines") %></th>
+        <th data-toggle="true" data-sort-ignore="true"><%= t(".table.line.details") %></th>
+        <th data-hide="all"><%= t(".table.line.routes") %></th>
+        <th data-hide="all"><%= t(".table.line.connection_links") %></th>
+        <th data-hide="all"><%= t(".table.line.time_tables") %></th>
+        <th data-hide="all"><%= t(".table.line.stop_areas") %></th>
+        <th data-hide="all"><%= t(".table.line.access_points") %></th>
+        <th data-hide="all"><%= t(".table.line.vehicle_journeys") %></th>
+        <th data-hide="all"><%= t(".table.line.journey_patterns") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% line_items.each_with_index do |line_item, index| %>
+        <tr>
+          <td data-value="<%=line_item.status%>"><%= line_item.status ? font_awesome_classic_tag("fa-check") : font_awesome_classic_tag("fa-times")  %></td>
+          <td><%= line_item.name %></td>
+          <td></td>
+          <td><%= line_item.routes %></td>
+          <td><%= line_item.connection_links %></td>
+          <td><%= line_item.time_tables %></td>
+          <td><%= line_item.stop_areas %></td>
+          <td><%= line_item.access_points %></td>
+          <td><%= line_item.vehicle_journeys %></td>
+          <td><%= line_item.journey_patterns %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="10">
+          <% if line_items.respond_to?(:total_pages) %>
+            <%= render 'shared/paginate', { datas: line_items } %>
+          <% else %>
+            <ul class="pagination pagination-centered hide-if-no-paging"></ul>
+          <% end %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

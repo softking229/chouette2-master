@@ -1,0 +1,21 @@
+<div class="title row">
+  <div class="col-md-8">
+    <%= title_tag job_status_title(@export) %>
+  </div>
+  <div class="col-md-4">
+    <%= export_attributes_tag(@export) %>
+  </div>
+</div>
+
+<%= render 'ievkit_views/progress_bar', {
+        path_to_progress_job: progress_referential_export_path(@referential, @export.id, format: :js) 
+      } %>
+
+<% content_for :sidebar do %>
+  <ul class="actions">
+    <li><%= link_to t('exports.actions.destroy'), referential_export_path(@referential, @export.id), :method => :delete, :data => {:confirm => t('exports.actions.destroy_confirm')}, :class => "remove" %></li>
+  </ul>
+
+  <%= history_tag(@export) %>
+
+<% end %>
